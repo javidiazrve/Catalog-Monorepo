@@ -1,69 +1,133 @@
-# Catalog System (Flutter And Angular)
+# 📦 Catalog System (Flutter & Angular)
 
-Monorepo with a Flutter App (Creator) and an Angular Web App (Admin).
+Monorepo containing:
 
-## Setup
+- **Flutter App (Creator)** — Used to create and manage catalog items.
+- **Angular Web App (Admin)** — Used to review, filter, and approve catalog items.
 
-### Flutter App
+---
 
-1# - cd flutter_app
+## ⚙️ Setup
 
-2# - install dependencies -> flutter pub get
+### 🐦 Flutter App
 
-### Angular App
+```bash
+# 1. Navigate to the Flutter project
+cd flutter_app
 
-1# - cd angular_app
+# 2. Install dependencies
+flutter pub get
+```
 
-2# - install modules -> npm install
+---
 
-## Run
+### 🅰️ Angular App
 
-### Start Server in Flutter
+```bash
+# 1. Navigate to the Angular project
+cd angular_app
 
-From root:
+# 2. Install dependencies
+npm install
+```
 
-1# - dart run flutter_app/lib/Server/api_server.dart
+---
 
-or in flutter_app folder:
+## 🚀 Run
 
-1# - cd flutter_app
-2# - dart run lib/Server/api_server.dart
+### 🖥️ Start the Flutter Server
 
-should show this message in the terminal:
+From the **root** of the monorepo:
 
-✅ API Server running at http://<some-IP>:8080
+```bash
+dart run flutter_app/lib/Server/api_server.dart
+```
 
-### Start Flutter App
+Or from inside the `flutter_app` folder:
 
-1# - cd flutter_app
-2# - flutter run
-3# - select in the terminal the platform of your preference
+```bash
+cd flutter_app
+dart run lib/Server/api_server.dart
+```
 
-### Start Angular Admin
+You should see the following message in the terminal:
 
-1# - cd angular_app
-2# - ng serve
+```
+✅ API Server running at http://<your-IP>:8080
+```
 
-it should open a browser window with the app in "http://localhost:4200/admin" url.
+---
 
-## User Manual
+### 📱 Run the Flutter App
 
-### Flutter App
+```bash
+cd flutter_app
+flutter run
+```
 
-- Once the app is running you will see a list of items already created, this is for fast testing.
+Then, in the terminal, select the platform (Android, iOS, or Web) where you want to run the app.
 
-- Tap on the floating button at the rigth-bottom corner, this will open de creation view, there you can create a new item, fill the fields and press the "create item" button.
+---
 
-- Then you would see a snackbar telling you if the action was succeded or not. The fields will restart so you can create as much items as you like.
+### 🌐 Run the Angular Admin Panel
 
-- To go back use de back arrow in the appbar.
+```bash
+cd angular_app
+ng serve
+```
 
-- The list would be already updated with the new items, but if you need it you can refresh with new data from the server scrolling down the list until a refresh icon appears on screen. It will do another call to the server and refresh the data, use it to see the changes done in the admin panel.
+After it compiles successfully, the app will be available at:  
+👉 [http://localhost:4200/admin](http://localhost:4200/admin)
 
-### Angular App
+---
 
-- First you see the list of items and the different types of filters. Write in the search bar to search an item by the title, select a category to filter by category, select Ascending or Descending in the Quality Score Select Field to sort the items in the order of your preference, and click the refresh botton to refresh de data.
+## 📖 User Guide
 
-- To view the items data click on them, it will open a card where you can see all the details and approve the item if it fulfills the requirements, if not, then you could see a message letting you know if the item has been already approved or if it's quality score is so low.
+### 📲 Flutter App (Creator)
 
-- Once you click de approve button it will update de card and the list.
+- When the app starts, you'll see a list of preloaded items for quick testing.
+- Tap the **floating action button** in the bottom-right corner to open the **item creation view**.
+- Fill in the fields and press **"Create Item"** to add a new one.
+- A **snackbar** will appear confirming whether the operation succeeded or failed.
+- After creation, the form fields reset automatically so you can keep adding more items.
+- Use the **back arrow** in the app bar to return to the item list.
+- The list updates automatically with new items.  
+  If needed, you can **pull down to refresh** and fetch the latest data from the server — for example, to see changes made from the admin panel.
+
+---
+
+### 💻 Angular App (Admin)
+
+- The main view displays the **list of catalog items** along with several filtering options.
+- You can:
+
+  - 🔍 Search items by **title** using the search bar.
+  - 🗂️ Filter items by **category**.
+  - 📊 Sort items **ascending or descending** by _Quality Score_.
+  - 🔄 Click the **refresh button** to reload data from the server.
+
+- Click on an item to open its **detail card**, where you can see all its information and, if it meets the requirements, **approve** it.
+- If the item does **not** meet the quality standards or is already approved, an informative message will appear instead.
+- Once you click the **Approve** button, both the card and the item list will update automatically to reflect the new state.
+
+---
+
+## 🧠 Notes
+
+- Make sure both the Flutter server and the Angular admin are running simultaneously.
+- The Flutter app communicates with the API server locally using the IP shown in the terminal.
+- You can change the API endpoint in the configuration file if needed.
+
+---
+
+## 🧩 Tech Stack
+
+- **Flutter 3.x**
+- **Dart**
+- **Angular 18+**
+- **TypeScript**
+- **GetX (State Management)**
+
+---
+
+✨ _Developed with passion for creating, learning, and productivity._
