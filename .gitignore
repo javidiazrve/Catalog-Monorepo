@@ -1,0 +1,8 @@
+# Global ignores
+.DS_Store
+node_modules/
+build/
+dist/
+.idea/
+.vscode/
+*.log
