@@ -36,11 +36,25 @@ List<CatalogItem> items = [
     tags: ["Api", "Test"],
     qualityScore: 75,
   ),
+  CatalogItem(
+    id: "bhiowef4563rg456rg",
+    title: "Api Test 4",
+    description: "Mock item 4",
+    category: "Test 2",
+    tags: ["Api", "Test"],
+    qualityScore: 98,
+  ),
 ];
 
 Future<Response> _apiHandler(Request req) async {
   final path = req.url.path;
   final method = req.method.toUpperCase();
+
+  print(path);
+
+  if (method == 'OPTIONS') {
+    return Response.ok('', headers: _corsHeaders);
+  }
 
   // GET /items (All items)
   if (method == 'GET' && path == 'items') {
@@ -54,9 +68,9 @@ Future<Response> _apiHandler(Request req) async {
   if (method == 'GET' && path.startsWith('items/')) {
     final id = path.split('/')[1];
 
-    CatalogItem item = items.firstWhere((item) => item.id == id);
+    int itemIndex = items.indexWhere((item) => item.id == id);
 
-    if (item == null) {
+    if (itemIndex < 0) {
       return Response.notFound(
         jsonEncode({'error': 'Item with id($id) not found'}),
         headers: _corsHeaders,
@@ -64,7 +78,7 @@ Future<Response> _apiHandler(Request req) async {
     }
 
     return Response.ok(
-      jsonEncode(item.toJson()),
+      jsonEncode(items[itemIndex].toJson()),
       headers: {'Content-Type': 'application/json', ..._corsHeaders},
     );
   }
@@ -97,28 +111,28 @@ Future<Response> _apiHandler(Request req) async {
   // PATCH /items/:id/approve
   if (method == "PATCH" &&
       path.startsWith('items/') &&
-      path.endsWith('/approved')) {
+      path.endsWith('/approve')) {
     final id = path.split('/')[1];
 
-    final CatalogItem mockItem = CatalogItem(
-      id: id,
-      title: "Api Test",
-      description: "Mock item",
-      category: "Test",
-      tags: ["Api", "Test"],
+    final itemIndex = items.indexWhere(
+      (i) => i.id == id && i.qualityScore >= 90,
     );
 
-    final approved = mockItem;
-
-    if (approved == null) {
+    if (itemIndex < 0) {
       return Response.badRequest(
-        body: jsonEncode({'error': 'Cannot approve item. Score is under 90'}),
+        body: jsonEncode({
+          'error': 'Cannot approve item. Score is under 90 or dont exists',
+        }),
         headers: _corsHeaders,
       );
     }
 
+    items[itemIndex].approved = true;
+
+    print(items[itemIndex].toString());
+
     return Response.ok(
-      jsonEncode(approved.toJson()),
+      jsonEncode(items[itemIndex].toJson()),
       headers: {'Content-Type': 'application/json', ..._corsHeaders},
     );
   }
