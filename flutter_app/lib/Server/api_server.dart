@@ -10,14 +10,40 @@ final _corsHeaders = {
   'Access-Control-Allow-Headers': 'Origin, Content-Type',
 };
 
+List<CatalogItem> items = [
+  CatalogItem(
+    id: "aaghiofoqeiw35",
+    title: "Api Test",
+    description: "Mock item",
+    category: "Test",
+    tags: ["Api", "Test"],
+    approved: true,
+    qualityScore: 90,
+  ),
+  CatalogItem(
+    id: "65tuyj4try4wr",
+    title: "Api Test 2",
+    description: "Mock item 2",
+    category: "Test 2",
+    tags: ["Api", "Test"],
+    qualityScore: 55,
+  ),
+  CatalogItem(
+    id: "6e8r5498wr4485",
+    title: "Api Test 3",
+    description: "Mock item 3",
+    category: "Test",
+    tags: ["Api", "Test"],
+    qualityScore: 75,
+  ),
+];
+
 Future<Response> _apiHandler(Request req) async {
   final path = req.url.path;
   final method = req.method.toUpperCase();
 
   // GET /items (All items)
   if (method == 'GET' && path == 'items') {
-    final List<CatalogItem> items = [];
-
     return Response.ok(
       jsonEncode(items.map((i) => i.toJson()).toList()),
       headers: {'Content-Type': 'application/json', ..._corsHeaders},
@@ -28,15 +54,9 @@ Future<Response> _apiHandler(Request req) async {
   if (method == 'GET' && path.startsWith('items/')) {
     final id = path.split('/')[1];
 
-    final CatalogItem mockItem = CatalogItem(
-      id: id,
-      title: "Api Test",
-      description: "Mock item",
-      category: "Test",
-      tags: ["Api", "Test"],
-    );
+    CatalogItem item = items.firstWhere((item) => item.id == id);
 
-    if (mockItem == null) {
+    if (item == null) {
       return Response.notFound(
         jsonEncode({'error': 'Item with id($id) not found'}),
         headers: _corsHeaders,
@@ -44,7 +64,7 @@ Future<Response> _apiHandler(Request req) async {
     }
 
     return Response.ok(
-      jsonEncode(mockItem.toJson()),
+      jsonEncode(item.toJson()),
       headers: {'Content-Type': 'application/json', ..._corsHeaders},
     );
   }
@@ -65,6 +85,8 @@ Future<Response> _apiHandler(Request req) async {
     }
 
     final created = CatalogItem.fromJson(body);
+    created.calculateScore();
+    items.add(created);
 
     return Response.ok(
       jsonEncode(created.toJson()),
@@ -106,7 +128,7 @@ Future<Response> _apiHandler(Request req) async {
 }
 
 validateText(String text) {
-  final RegExp allowed = RegExp(r'^[a-zA-Z0-9\s]+$');
+  final RegExp allowed = RegExp(r'^[a-zA-Z0-9\s]*$');
 
   return allowed.hasMatch(text);
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Controllers/item_controller.dart';
+import 'package:flutter_app/Screens/items_screen.dart';
 import 'package:flutter_app/Services/api_service.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +12,7 @@ void main() {
 
 void initServices() {
   Get.put(ApiService());
+  Get.put(ItemController());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,20 +23,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(appBarTheme: AppBarTheme(color: Colors.redAccent)),
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(color: Colors.redAccent),
+        primaryColor: Colors.redAccent,
+      ),
       darkTheme: ThemeData(
         appBarTheme: AppBarTheme(color: Colors.purpleAccent),
       ),
-      home: const HomePage(),
+      home: const ItemsScreen(),
     );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text("Welcome"));
   }
 }

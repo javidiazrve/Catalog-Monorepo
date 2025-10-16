@@ -29,7 +29,7 @@ class CatalogItem {
     if (description.length > 60) qualityScore += 15;
     if (category.isNotEmpty) qualityScore += 10;
     if (tags.isNotEmpty) qualityScore += 10;
-    if (tags.length >= 2) qualityScore += 10;
+    if (tags.length >= 2) qualityScore += 5;
   }
 
   Map<String, dynamic> toJson() {
