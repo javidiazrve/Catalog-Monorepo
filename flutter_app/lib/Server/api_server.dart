@@ -50,8 +50,6 @@ Future<Response> _apiHandler(Request req) async {
   final path = req.url.path;
   final method = req.method.toUpperCase();
 
-  print(path);
-
   if (method == 'OPTIONS') {
     return Response.ok('', headers: _corsHeaders);
   }
@@ -128,8 +126,6 @@ Future<Response> _apiHandler(Request req) async {
     }
 
     items[itemIndex].approved = true;
-
-    print(items[itemIndex].toString());
 
     return Response.ok(
       jsonEncode(items[itemIndex].toJson()),

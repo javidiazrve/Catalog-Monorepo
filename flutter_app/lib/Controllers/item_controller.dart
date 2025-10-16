@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 class ItemController extends GetxController {
   final ApiService _service = Get.find();
 
-  // Lista observable de items
   final RxList<CatalogItem> items = <CatalogItem>[].obs;
 
-  // Estado de carga
   final RxBool isLoading = false.obs;
+
+  var currentScore = 40.0.obs;
 
   @override
   void onInit() {
@@ -18,7 +18,6 @@ class ItemController extends GetxController {
     fetchItems();
   }
 
-  // Obtener todos los items del servidor
   Future<void> fetchItems() async {
     try {
       isLoading.value = true;
@@ -31,30 +30,32 @@ class ItemController extends GetxController {
     }
   }
 
-  // Crear un nuevo item usando DTO
+  void calculateQualityScore(NewCatalogItemDto dto) {
+    double score = 40;
+
+    if (dto.title.length > 12) score += 20;
+    if (dto.description.length > 60) score += 15;
+    if (dto.category?.isNotEmpty ?? false) score += 10;
+    if (dto.tags?.isNotEmpty ?? false) {
+      score += 10;
+      if (dto.tags!.length >= 2) score += 5;
+    }
+
+    currentScore.value = score.clamp(0, 100);
+  }
+
   Future<void> createItem(NewCatalogItemDto dto) async {
     try {
       isLoading.value = true;
       final created = await _service.createItem(dto);
       items.add(created);
-      Get.snackbar('Éxito', 'Item creado correctamente');
+      Get.snackbar(
+        'Success',
+        'Item creaded correctly',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (e) {
-      Get.snackbar('Error', e.toString());
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  // Aprobar un item
-  Future<void> approveItem(String id) async {
-    try {
-      isLoading.value = true;
-      final updated = await _service.approveItem(id);
-      final index = items.indexWhere((i) => i.id == id);
-      if (index != -1) items[index] = updated;
-      Get.snackbar('Éxito', 'Item aprobado');
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
+      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
     }
